@@ -9,16 +9,16 @@ class Vertex:
         self.connections = {}
 
     # add a neighbor to the connected vertices dict with default weight 0
-    def add_neighbor(self, n_id, w = 0):
-        self.connections[n_id] = w
+    def add_neighbor(self, v, weight = 0):
+        self.connections[v] = weight
 
     # returns the id of the vertex
     def get_id(self):
         return self.id
 
-    #returns the weight of an edge using the connected vertex
-    def get_weight(self, v_id):
-        return self.connections[v_id]
+    #returns the weight of an edge using the connected vertex stored in connections (argument is a vertex)
+    def get_weight(self, v):
+        return self.connections[v]
 
     # returns the ids of the connected vertices
     def get_connections(self):
