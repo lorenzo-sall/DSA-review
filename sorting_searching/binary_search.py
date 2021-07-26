@@ -1,7 +1,7 @@
 # searching an item in an ordered list. return True if found, else False
 # we find the item in the middle and compare. if it is not our item, we know that
 # smaller items will be in the first half of the list and bigger items will be in the
-# second half. we split the list and repeat until wi find the item or the list is exhausted
+# second half. we split the list and repeat until we find the item or the list is exhausted
 # (divide and conquer)
 # the binary search is O(log(n)) in the worst case
 
