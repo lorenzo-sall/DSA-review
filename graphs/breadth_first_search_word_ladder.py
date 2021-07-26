@@ -15,6 +15,7 @@ At each step you must transform one word into another word, you are not allowed 
 # Also, to keep track of the vertices that need to be explored we will use a queue
 
 import time
+import sys
 
 class Queue:
     """
@@ -190,24 +191,54 @@ def bf_search(graph, start_v):
                 v_queue.enqueue(nbr_v)      # add to the rare of the queue
         current_v.set_color("black")    # after all the neighbours are discovered the current vertex is fully explored
 
+# returns the path from the required item to the root
 def traverse(target_v):
     v = target_v
+    output = []
     while (v.get_pred()):
-        print(v.get_id())
+        output.append(v.get_id())
         v = v.get_pred()
-    print(v.get_id())
+    output.append(v.get_id())
+    return output
 
-t = time.time()
-word_ladder_graph = build_graph("./wordlist_4_clean")
-exec_t = time.time() - t
-print(f"[ ] Built graph from file in {exec_t} seconds")
+def main(argv):
 
-t = time.time()
-bf_search(word_ladder_graph, word_ladder_graph.get_vertex("fool"))
-exec_t = time.time() - t
-print(f"[ ] BFS run in {exec_t} seconds. All nodes explored")
+    if len(argv) < 2:
+        print(f"Usage:$ python3 {argv[0]} <from word> <to word>")
+        exit(2)
+    with open("./wordlist_4_clean") as wl:
+        a1 = False
+        a2 = False
+        for l in wl:
+            if argv[1].strip() == l.strip():
+                a1 = True
+            if argv[2].strip() == l.strip():
+                a2 = True
+            if a1 and a2:
+                break
+        if not a1:
+            print(f"[!] {argv[1]} is not a valid word! Terminating...")
+            exit(1)
+        if not a2:
+            print(f"[!] {argv[2]} is not a valid word! Terminating...")
+            exit(1)
 
-t = time.time()
-traverse(word_ladder_graph.get_vertex("sage"))
-exec_t = time.time() - t
-print(f"[ ] Graph traversed in {exec_t} seconds")
+    t = time.time()
+    word_ladder_graph = build_graph("./wordlist_4_clean")
+    exec_t = time.time() - t
+    print(f"[ ] Built graph from file in {exec_t} seconds")
+
+    t = time.time()
+    bf_search(word_ladder_graph, word_ladder_graph.get_vertex(argv[1].strip()))
+    exec_t = time.time() - t
+    print(f"[ ] BFS run in {exec_t} seconds. All nodes explored")
+
+    t = time.time()
+    for i in traverse(word_ladder_graph.get_vertex(argv[2].strip()))[::-1]:
+        print("[>] " + i)
+    exec_t = time.time() - t
+    print(f"[ ] Graph traversed in {exec_t} seconds")
+
+
+if __name__ == "__main__":
+    main(sys.argv)
